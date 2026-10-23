@@ -153,3 +153,9 @@ turns out to be dead.
   once every `GH_PICKER_VALIDATE_TTL` seconds (default 60) — a token that
   dies mid-window can still fail once silently before the next check
   catches it. Its cache lives at `~/.cache/gh-account-picker/`.
+
+## Contributing & license
+
+Open source under the [MIT License](LICENSE). Changes are accepted **only
+via pull request** — see [CONTRIBUTING.md](CONTRIBUTING.md). Testing on
+macOS and Linux is especially welcome.
