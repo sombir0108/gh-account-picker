@@ -1,4 +1,4 @@
-# Windows-native entry point for removing gh-account-picker. See
+# Windows-native entry point for removing git-account-picker. See
 # install-windows.ps1 for why this bridges to uninstall.sh via Git for
 # Windows' bundled bash.exe rather than a plain `bash` on PATH.
 param(

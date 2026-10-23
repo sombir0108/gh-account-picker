@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Shared account-picking logic used by both:
-#   - bin/git-credential-gh-picker.sh (git credential helper)
-#   - bin/gh-switch-account.sh        (standalone / desktop shortcut)
+#   - bin/git-credential-account-picker.sh (git credential helper)
+#   - bin/git-switch-account.sh        (standalone / desktop shortcut)
 #
 # Meant to be sourced, not executed directly.
 
@@ -112,19 +112,19 @@ confirm_install_gh() {
       local res
       res="$(powershell.exe -NoProfile -Command '
         Add-Type -AssemblyName System.Windows.Forms
-        $r = [System.Windows.Forms.MessageBox]::Show("GitHub CLI (gh) is required but was not found. Install it now?", "gh-account-picker", "YesNo", "Question")
+        $r = [System.Windows.Forms.MessageBox]::Show("GitHub CLI (gh) is required but was not found. Install it now?", "git-account-picker", "YesNo", "Question")
         Write-Output $r
       ' 2>/dev/null | tr -d '\r')"
       [ "$res" = "Yes" ]
       ;;
     macos)
       local res
-      res="$(osascript -e 'display dialog "GitHub CLI (gh) is required but was not found. Install it now?" with title "gh-account-picker" buttons {"No", "Yes"} default button "Yes"' 2>/dev/null || echo "button returned:No")"
+      res="$(osascript -e 'display dialog "GitHub CLI (gh) is required but was not found. Install it now?" with title "git-account-picker" buttons {"No", "Yes"} default button "Yes"' 2>/dev/null || echo "button returned:No")"
       case "$res" in *"button returned:Yes"*) return 0 ;; *) return 1 ;; esac
       ;;
     linux)
       command -v zenity >/dev/null 2>&1 || return 1
-      zenity --question --title="gh-account-picker" --text="GitHub CLI (gh) is required but was not found. Install it now?" 2>/dev/null
+      zenity --question --title="git-account-picker" --text="GitHub CLI (gh) is required but was not found. Install it now?" 2>/dev/null
       ;;
     *) return 1 ;;
   esac
@@ -251,15 +251,15 @@ ensure_gh_login() {
 # just fail with no prompt, silently.
 #
 # So `get` proactively checks the *active* account against the real API —
-# throttled to once per GH_PICKER_VALIDATE_TTL seconds (default 60) per host
+# throttled to once per GIT_ACCOUNT_PICKER_VALIDATE_TTL seconds (default 60) per host
 # so this doesn't turn back into a network round trip on every single poll.
 
-GH_PICKER_CACHE_DIR="${GH_PICKER_CACHE_DIR:-$HOME/.cache/gh-account-picker}"
+GIT_ACCOUNT_PICKER_CACHE_DIR="${GIT_ACCOUNT_PICKER_CACHE_DIR:-$HOME/.cache/git-account-picker}"
 
 needs_validation() {
   local host="$1"
-  local ttl="${GH_PICKER_VALIDATE_TTL:-60}"
-  local marker="$GH_PICKER_CACHE_DIR/last-validated-$host"
+  local ttl="${GIT_ACCOUNT_PICKER_VALIDATE_TTL:-60}"
+  local marker="$GIT_ACCOUNT_PICKER_CACHE_DIR/last-validated-$host"
   [ -f "$marker" ] || return 0
   local now last
   now="$(date +%s 2>/dev/null || echo 0)"
@@ -269,8 +269,8 @@ needs_validation() {
 
 mark_validated() {
   local host="$1"
-  mkdir -p "$GH_PICKER_CACHE_DIR" 2>/dev/null || true
-  date +%s > "$GH_PICKER_CACHE_DIR/last-validated-$host" 2>/dev/null || true
+  mkdir -p "$GIT_ACCOUNT_PICKER_CACHE_DIR" 2>/dev/null || true
+  date +%s > "$GIT_ACCOUNT_PICKER_CACHE_DIR/last-validated-$host" 2>/dev/null || true
 }
 
 active_credential_is_valid() {

@@ -93,11 +93,11 @@ function Show-AccountPicker([string[]]$Accounts) {
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
   $install = [System.Windows.Forms.MessageBox]::Show(
     "GitHub CLI (gh) is required but was not found. Install it now?",
-    "gh-account-picker", 'YesNo', 'Question')
+    "git-account-picker", 'YesNo', 'Question')
   if ($install -ne [System.Windows.Forms.DialogResult]::Yes) {
     [System.Windows.Forms.MessageBox]::Show(
       "GitHub CLI is required. Install manually from https://cli.github.com/",
-      "gh-account-picker", 'OK', 'Warning') | Out-Null
+      "git-account-picker", 'OK', 'Warning') | Out-Null
     exit 1
   }
 
@@ -114,7 +114,7 @@ if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
   if (-not $installed -or -not (Get-Command gh -ErrorAction SilentlyContinue)) {
     [System.Windows.Forms.MessageBox]::Show(
       "GitHub CLI installation failed or no supported package manager (winget/choco) was found. Install manually from https://cli.github.com/",
-      "gh-account-picker", 'OK', 'Error') | Out-Null
+      "git-account-picker", 'OK', 'Error') | Out-Null
     exit 1
   }
 }
@@ -125,7 +125,7 @@ $accounts = Get-GhAccounts -HostName $hostName
 if ($accounts.Count -eq 0) {
   [System.Windows.Forms.MessageBox]::Show(
     "No GitHub account is configured yet. Click OK to sign in via your browser.",
-    "gh-account-picker", 'OK', 'Information') | Out-Null
+    "git-account-picker", 'OK', 'Information') | Out-Null
   Invoke-BrowserLogin
   $accounts = Get-GhAccounts -HostName $hostName
 }
@@ -133,7 +133,7 @@ if ($accounts.Count -eq 0) {
 if ($accounts.Count -eq 0) {
   [System.Windows.Forms.MessageBox]::Show(
     "Still no GitHub account configured. Finish signing in and try again.",
-    "gh-account-picker", 'OK', 'Warning') | Out-Null
+    "git-account-picker", 'OK', 'Warning') | Out-Null
   exit 1
 }
 

@@ -1,4 +1,4 @@
-# Windows-native entry point for gh-account-picker. Run this directly from
+# Windows-native entry point for git-account-picker. Run this directly from
 # PowerShell (right-click -> "Run with PowerShell", or `.\install-windows.ps1`)
 # — no need to open Git Bash manually first.
 #

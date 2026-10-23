@@ -1,4 +1,4 @@
-# gh-account-picker
+# git-account-picker
 
 Lets you juggle multiple GitHub accounts on one machine without git
 silently using the wrong one. Day to day it's quiet: git operations on
@@ -16,7 +16,7 @@ an account when:
   trip to every single git command, only enough to catch this within
   about 60 seconds instead of failing silently forever, or
 - you deliberately ask, via the **desktop shortcut** or by running
-  `gh-switch-account.sh` yourself.
+  `git-switch-account.sh` yourself.
 
 **Adding another account:** the Windows popup (shortcut and in-IDE prompt)
 has an **Add account...** button. It runs the browser sign-in
@@ -73,10 +73,10 @@ Bash manually first.
 | macOS / Linux | `./install.sh` |
 
 Pass a different directory as an argument to install elsewhere, e.g.
-`./install.sh /opt/gh-account-picker` or
-`.\install-windows.ps1 -InstallDir D:\tools\gh-account-picker`.
+`./install.sh /opt/git-account-picker` or
+`.\install-windows.ps1 -InstallDir D:\tools\git-account-picker`.
 
-Installs to `~/.gh-account-picker` by default, points git's
+Installs to `~/.git-account-picker` by default, points git's
 `credential.helper` for `github.com`/`gist.github.com` at it, and creates a
 **"Switch GitHub Account" desktop shortcut**.
 
@@ -92,7 +92,7 @@ git command:
 It can also be run from a terminal directly:
 
 ```bash
-~/.gh-account-picker/bin/gh-switch-account.sh
+~/.git-account-picker/bin/git-switch-account.sh
 ```
 
 ## Uninstall
@@ -114,7 +114,7 @@ as it needs auth for a host. This helper:
 1. On `get`: normally just passes straight through to
    `gh auth git-credential get`, which returns whatever account is
    currently active — no prompt. First, though (throttled to once per
-   `GH_PICKER_VALIDATE_TTL` seconds, default 60), it runs `gh api user`
+   `GIT_ACCOUNT_PICKER_VALIDATE_TTL` seconds, default 60), it runs `gh api user`
    against the real API to make sure the active account's token is
    actually still good. If it isn't, it prompts you to pick an account,
    switches (`gh auth switch`), and — if the newly-active one is *also*
@@ -133,7 +133,7 @@ re-authorization being required shows up as a 403, which git does not
 treat as a credential rejection at all, so nothing would ever prompt you
 without the proactive check.
 
-The manual desktop-shortcut path (`gh-switch-account.sh` /
+The manual desktop-shortcut path (`git-switch-account.sh` /
 `switch-account.ps1`) skips all of that and just prompts directly, any
 time you want to switch proactively — and validates the result the same
 way, falling back to a browser sign-in if the account you picked also
@@ -150,9 +150,9 @@ turns out to be dead.
   silently falls back to your first logged-in account rather than
   blocking the git operation.
 - The expired-token check adds one `gh api user` call per host at most
-  once every `GH_PICKER_VALIDATE_TTL` seconds (default 60) — a token that
+  once every `GIT_ACCOUNT_PICKER_VALIDATE_TTL` seconds (default 60) — a token that
   dies mid-window can still fail once silently before the next check
-  catches it. Its cache lives at `~/.cache/gh-account-picker/`.
+  catches it. Its cache lives at `~/.cache/git-account-picker/`.
 
 ## Contributing & license
 
