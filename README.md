@@ -18,6 +18,8 @@ an account when:
 - you deliberately ask, via the **desktop shortcut** or by running
   `git-switch-account.sh` yourself.
 
+![The account picker popup on Windows, listing three accounts with Add account..., Switch and Cancel buttons](docs/images/windows-picker.png)
+
 **Adding another account:** the Windows popup (shortcut and in-IDE prompt)
 has an **Add account...** button. It runs the browser sign-in
 (`gh auth login --web --scopes workflow`), refreshes the list, and shows
