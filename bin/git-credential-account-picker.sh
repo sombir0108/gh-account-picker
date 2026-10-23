@@ -18,7 +18,7 @@
 #     rejection) — which would otherwise fail silently with no prompt.
 #
 # Prompt strategy (shared by all of the above, and by
-# bin/gh-switch-account.sh for manual switching):
+# bin/git-switch-account.sh for manual switching):
 #   - If a real terminal (tty) is attached (plain shell, most CLI git usage)
 #     -> numbered menu on that terminal.
 #   - Otherwise (IDEs, GUI git clients spawning git without a tty)

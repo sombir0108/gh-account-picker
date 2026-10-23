@@ -4,10 +4,10 @@
 # Credential Manager) and any `gh auth login` sessions untouched.
 #
 # Usage:
-#   ./uninstall.sh [install-dir]      (default install-dir: ~/.gh-account-picker)
+#   ./uninstall.sh [install-dir]      (default install-dir: ~/.git-account-picker)
 set -euo pipefail
 
-INSTALL_DIR="${1:-$HOME/.gh-account-picker}"
+INSTALL_DIR="${1:-$HOME/.git-account-picker}"
 
 for host in github.com gist.github.com; do
   git config --global --unset-all "credential.https://$host.helper" 2>/dev/null || true
@@ -28,4 +28,4 @@ esac
 
 rm -rf "$INSTALL_DIR"
 
-echo "Uninstalled gh-account-picker, reset the github.com/gist.github.com credential.helper overrides, and removed the desktop shortcut."
+echo "Uninstalled git-account-picker, reset the github.com/gist.github.com credential.helper overrides, and removed the desktop shortcut."

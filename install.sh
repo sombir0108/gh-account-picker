@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Installs gh-account-picker and wires it up as the git credential helper
+# Installs git-account-picker and wires it up as the git credential helper
 # for github.com / gist.github.com.
 #
 # Usage:
-#   ./install.sh [install-dir]      (default install-dir: ~/.gh-account-picker)
+#   ./install.sh [install-dir]      (default install-dir: ~/.git-account-picker)
 set -euo pipefail
 
-INSTALL_DIR="${1:-$HOME/.gh-account-picker}"
+INSTALL_DIR="${1:-$HOME/.git-account-picker}"
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if ! command -v git >/dev/null 2>&1; then
@@ -21,21 +21,21 @@ if ! ensure_gh_installed; then
   echo "Continuing install without GitHub CLI — the picker will prompt to install it later too." >&2
 fi
 
-echo "Installing gh-account-picker to $INSTALL_DIR"
+echo "Installing git-account-picker to $INSTALL_DIR"
 mkdir -p "$INSTALL_DIR/bin" "$INSTALL_DIR/gui" "$INSTALL_DIR/lib"
-cp "$SRC_DIR/bin/git-credential-gh-picker.sh" "$INSTALL_DIR/bin/"
-cp "$SRC_DIR/bin/gh-switch-account.sh" "$INSTALL_DIR/bin/"
+cp "$SRC_DIR/bin/git-credential-account-picker.sh" "$INSTALL_DIR/bin/"
+cp "$SRC_DIR/bin/git-switch-account.sh" "$INSTALL_DIR/bin/"
 cp "$SRC_DIR/lib/picker-common.sh" "$INSTALL_DIR/lib/"
 cp "$SRC_DIR/gui/picker-gui.ps1" "$INSTALL_DIR/gui/"
 cp "$SRC_DIR/gui/switch-account.ps1" "$INSTALL_DIR/gui/"
 cp "$SRC_DIR/gui/create-desktop-shortcut.ps1" "$INSTALL_DIR/gui/"
-chmod +x "$INSTALL_DIR/bin/git-credential-gh-picker.sh" "$INSTALL_DIR/bin/gh-switch-account.sh"
+chmod +x "$INSTALL_DIR/bin/git-credential-account-picker.sh" "$INSTALL_DIR/bin/git-switch-account.sh"
 
 for host in github.com gist.github.com; do
   git config --global --unset "credential.https://$host.username" 2>/dev/null || true
   git config --global --unset-all "credential.https://$host.helper" 2>/dev/null || true
   git config --global --add "credential.https://$host.helper" ""
-  git config --global --add "credential.https://$host.helper" "!bash '$INSTALL_DIR/bin/git-credential-gh-picker.sh'"
+  git config --global --add "credential.https://$host.helper" "!bash '$INSTALL_DIR/bin/git-credential-account-picker.sh'"
 done
 
 shortcut_msg="(no desktop shortcut created)"
@@ -53,7 +53,7 @@ case "$(uname -s 2>/dev/null)" in
     mkdir -p "$desktop"
     cat > "$desktop/Switch GitHub Account.command" <<CMD
 #!/usr/bin/env bash
-"$INSTALL_DIR/bin/gh-switch-account.sh"
+"$INSTALL_DIR/bin/git-switch-account.sh"
 CMD
     chmod +x "$desktop/Switch GitHub Account.command"
     shortcut_msg="Desktop shortcut created: $desktop/Switch GitHub Account.command"
@@ -66,7 +66,7 @@ CMD
 Type=Application
 Name=Switch GitHub Account
 Comment=Switch the active GitHub CLI/git account
-Exec=bash "$INSTALL_DIR/bin/gh-switch-account.sh"
+Exec=bash "$INSTALL_DIR/bin/git-switch-account.sh"
 Terminal=false
 Categories=Utility;
 DESK
